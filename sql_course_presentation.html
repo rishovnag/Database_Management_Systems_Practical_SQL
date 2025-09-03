@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Management System Practical: SQL - Weekly Course Presentation</title>
+    <title>CS 242: Practical SQL - Weekly Course Presentation</title>
     <style>
         * {
             margin: 0;
@@ -210,7 +210,7 @@
             </ul>
         </div>
 
-        <!-- Week 1 - Setup -->
+        <!-- Week 1 -->
         <div class="slide">
             <span class="week-badge">Week 1</span>
             <h1>Foundations of Data Retrieval</h1>
@@ -219,49 +219,7 @@
                 <strong>Goal:</strong> Learn to select, filter, and sort data
             </div>
 
-            <h2>Setup Script - Part 1: Create Customers Table</h2>
-            <p>Run this script in your SQL client to create the Customers table.</p>
-            <div class="code-block">
-CREATE TABLE Customers (
-    customer_id INT PRIMARY KEY,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    email VARCHAR(100) UNIQUE,
-    city VARCHAR(50),
-    join_date DATE
-);
-            </div>
-        </div>
-
-        <!-- Week 1 - Data Population -->
-        <div class="slide">
-            <span class="week-badge">Week 1</span>
-            <h1>Populate Data - Part 2</h1>
-            
-            <h2>Insert Sample Data into Customers Table</h2>
-            <div class="code-block">
-INSERT INTO Customers (customer_id, first_name, last_name, email, city, join_date) 
-VALUES
-    (1, 'John', 'Smith', 'john.smith@example.com', 'New York', '2024-01-15'),
-    (2, 'Jane', 'Doe', 'jane.doe@example.com', 'Los Angeles', '2024-02-20'),
-    (3, 'Peter', 'Jones', 'peter.jones@example.com', 'Chicago', '2024-03-10'),
-    (4, 'Susan', 'Miller', 'susan.miller@example.com', 'New York', '2024-04-05'),
-    (5, 'David', 'Scott', 'david.scott@example.com', 'Houston', '2024-05-21'),
-    (6, 'Mary', 'Adams', 'mary.adams@example.com', 'Phoenix', '2024-06-11'),
-    (7, 'Michael', 'Stewart', 'michael.stewart@example.com', 'Philadelphia', '2024-07-29'),
-    (8, 'Sarah', 'Lee', 'sarah.lee@example.com', 'San Diego', '2024-08-01');
-            </div>
-        </div>
-
-        <!-- Week 1 - In-Class Examples -->
-        <div class="slide">
-            <span class="week-badge">Week 1</span>
-            <h1>In-Class Example: Products Table</h1>
-            
-            <div class="goal-box">
-                <strong>Goal:</strong> Learn to select, filter, and sort data
-            </div>
-
+            <h2>In-Class Example: Products Table</h2>
             <div class="code-block">
 SELECT name, price FROM Products; -- Get specific columns
 
@@ -317,6 +275,11 @@ CREATE TABLE Categories (
             </div>
             
             <p>We'll then ALTER the Products table to add a FOREIGN KEY constraint that links Products.category_id to Categories.category_id.</p>
+            
+            <div class="code-block">
+ALTER TABLE Products ADD CONSTRAINT fk_category 
+FOREIGN KEY (category_id) REFERENCES Categories(category_id);
+            </div>
         </div>
 
         <div class="slide">
