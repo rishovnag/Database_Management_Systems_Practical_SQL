@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS 242: Practical SQL - Weekly Course Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 60px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        .slide h2 {
+            color: #34495e;
+            margin: 25px 0 15px 0;
+            font-size: 1.8rem;
+        }
+
+        .slide h3 {
+            color: #3498db;
+            margin: 20px 0 10px 0;
+            font-size: 1.4rem;
+        }
+
+        .slide p, .slide li {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .slide ul {
+            margin-left: 20px;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            font-size: 0.95rem;
+            overflow-x: auto;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .assignment-box {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .week-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .goal-box {
+            background: #f8f9fa;
+            border-left: 5px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            border: none;
+            color: white;
+        }
+
+        .title-slide p {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">19</span>
+        </div>
+
+        <!-- Title Slide -->
+        <div class="slide active title-slide">
+            <h1>Database Management System Practical: SQL</h1>
+            <p>Weekly Examples and Assignments</p>
+            <p style="margin-top: 40px; font-size: 1.2rem;">Master SQL Through Hands-On E-commerce Case Studies</p>
+        </div>
+
+        <!-- Course Overview Slide -->
+        <div class="slide">
+            <h1>Course Overview</h1>
+            <div class="highlight-box">
+                <h2>Case Study: The E-commerce Store</h2>
+                <p><strong>Core Tables:</strong> Customers, Products, Categories, Orders, Order_Items</p>
+                <p><em>All assignments assume students have a script to create and populate these tables.</em></p>
+            </div>
+            <h2>Course Structure</h2>
+            <ul>
+                <li><strong>14 Weeks</strong> of progressive SQL learning</li>
+                <li><strong>Hands-on examples</strong> with real e-commerce scenarios</li>
+                <li><strong>Weekly assignments</strong> to reinforce concepts</li>
+                <li><strong>Final project</strong> with comprehensive business questions</li>
+            </ul>
+        </div>
+
+        <!-- Week 1 -->
+        <div class="slide">
+            <span class="week-badge">Week 1</span>
+            <h1>Foundations of Data Retrieval</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Learn to select, filter, and sort data
+            </div>
+
+            <h2>In-Class Example: Products Table</h2>
+            <div class="code-block">
+SELECT name, price FROM Products; -- Get specific columns
+
+SELECT * FROM Products WHERE category_id = 1; -- Filter by category
+
+SELECT * FROM Products WHERE price > 100.00 AND price < 500.00; 
+-- Filter with ranges
+
+SELECT * FROM Products WHERE name LIKE '%Keyboard%'; 
+-- Find products using wildcards
+
+SELECT * FROM Products ORDER BY price DESC; 
+-- Find the most expensive products
+
+SELECT * FROM Products ORDER BY price DESC LIMIT 10; 
+-- Find the 10 most expensive
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 1</span>
+            <h1>Assignment 1: Querying Customers</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write SQL queries against the Customers table to find:</h2>
+                <ol>
+                    <li>All information for customers who live in 'New York'</li>
+                    <li>The first_name, last_name, and email of all customers whose last name starts with the letter 'S'</li>
+                    <li>A list of all customers, ordered by the date they joined (join_date) from newest to oldest</li>
+                    <li>The top 5 customers who joined most recently</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="slide">
+            <span class="week-badge">Week 2</span>
+            <h1>Schema Design & Data Definition (DDL)</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Learn to create tables and define data integrity
+            </div>
+
+            <h2>In-Class Example: Product Categories</h2>
+            <p>We need a way to track product categories.</p>
+            
+            <div class="code-block">
+CREATE TABLE Categories (
+    category_id INT PRIMARY KEY,
+    category_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT
+);
+            </div>
+            
+            <p>We'll then ALTER the Products table to add a FOREIGN KEY constraint that links Products.category_id to Categories.category_id.</p>
+            
+            <div class="code-block">
+ALTER TABLE Products ADD CONSTRAINT fk_category 
+FOREIGN KEY (category_id) REFERENCES Categories(category_id);
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 2</span>
+            <h1>Assignment 2: Building the Core Tables</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write a complete SQL script to create the Customers and Orders tables</h2>
+                <p><strong>Deliverable:</strong> A .sql file with two CREATE TABLE statements</p>
+                
+                <h3>Requirements:</h3>
+                <ul>
+                    <li><strong>Customers:</strong> customer_id (PK), first_name, last_name, email (unique), join_date</li>
+                    <li><strong>Orders:</strong> order_id (PK), customer_id (FK), order_date, status</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="slide">
+            <span class="week-badge">Week 3</span>
+            <h1>Data Manipulation and Modification (DML)</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Learn to insert, update, and delete data safely
+            </div>
+
+            <h2>In-Class Example: A Customer Places an Order</h2>
+            <div class="code-block">
+-- Insert new customer
+INSERT INTO Customers (first_name, last_name, email) 
+VALUES ('Priya', 'Sharma', 'priya.s@example.com');
+
+-- Customer moves - UPDATE with WHERE clause (important!)
+UPDATE Customers SET city = 'Mumbai' 
+WHERE customer_id = 123;
+
+-- Customer cancels account
+DELETE FROM Customers WHERE customer_id = 123;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 3</span>
+            <h1>Assignment 3: Managing Inventory</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write SQL statements for the Products table:</h2>
+                <ol>
+                    <li><strong>INSERT</strong> three new products into your database</li>
+                    <li>A supplier increased prices. <strong>UPDATE</strong> the price of all products in a specific category by 15%</li>
+                    <li>Discontinue a product by <strong>DELETE</strong>ing it from the Products table</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="slide">
+            <span class="week-badge">Week 4</span>
+            <h1>Grouping and Aggregation</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Learn to summarize data
+            </div>
+
+            <h2>In-Class Example: Sales Reports for Marketing</h2>
+            <div class="code-block">
+-- How many products are in each category?
+SELECT category_id, COUNT(*) AS num_products 
+FROM Products GROUP BY category_id;
+
+-- What is the average product price per category?
+SELECT category_id, AVG(price) AS avg_price 
+FROM Products GROUP BY category_id;
+
+-- Which categories have more than 10 products?
+SELECT category_id, COUNT(*) AS num_products 
+FROM Products GROUP BY category_id
+HAVING COUNT(*) > 10;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 4</span>
+            <h1>Assignment 4: Order Analytics</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write SQL queries to find:</h2>
+                <ol>
+                    <li>The total number of orders placed by each customer</li>
+                    <li>The total revenue generated each day</li>
+                    <li>A list of customers who have placed 3 or more orders</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Weeks 5 & 6 -->
+        <div class="slide">
+            <span class="week-badge">Weeks 5 & 6</span>
+            <h1>Mastering Joins</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Combine data from multiple tables
+            </div>
+
+            <h2>In-Class Example: What Was in Each Order?</h2>
+            <div class="code-block">
+-- INNER JOIN: Show customer names next to their order dates
+SELECT c.first_name, o.order_date 
+FROM Customers c 
+JOIN Orders o ON c.customer_id = o.customer_id;
+
+-- LEFT JOIN: Include customers who have never ordered
+SELECT c.first_name, o.order_id 
+FROM Customers c 
+LEFT JOIN Orders o ON c.customer_id = o.customer_id;
+
+-- Multi-table JOIN: Show product names and quantities for order #5
+SELECT p.name, oi.quantity 
+FROM Products p 
+JOIN Order_Items oi ON p.product_id = oi.product_id 
+WHERE oi.order_id = 5;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Weeks 5 & 6</span>
+            <h1>Assignment 5 & 6: Comprehensive Reporting</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write queries to answer these business questions:</h2>
+                <ol>
+                    <li>List the names of all products purchased by a customer with a specific email address</li>
+                    <li>Find the total amount spent by each customer (Hint: Join Orders and Order_Items, then GROUP BY customer)</li>
+                    <li>List all product categories and the number of products sold from each category. Include categories that have had zero sales</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Week 7 -->
+        <div class="slide">
+            <span class="week-badge">Week 7</span>
+            <h1>Subqueries and Set Operations</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Use queries within queries
+            </div>
+
+            <h2>In-Class Example: Nested Logic</h2>
+            <div class="code-block">
+-- Subquery in WHERE: Find products more expensive than Gaming Mouse
+SELECT name, price FROM Products 
+WHERE price > (SELECT price FROM Products 
+               WHERE name = 'Gaming Mouse');
+
+-- UNION: Create single list of cities with customers or warehouses
+SELECT city FROM Customers 
+UNION 
+SELECT city FROM Warehouses;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 7</span>
+            <h1>Assignment 7: Advanced Filtering</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write the following queries:</h2>
+                <ol>
+                    <li>Find all customers who have placed an order with a total amount greater than the average of all orders</li>
+                    <li>Find all products that have never been sold (Hint: use product_id NOT IN (SELECT product_id FROM Order_Items))</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Week 8 -->
+        <div class="slide">
+            <span class="week-badge">Week 8</span>
+            <h1>Common Table Expressions (CTEs)</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Write cleaner, more readable complex queries
+            </div>
+
+            <h2>In-Class Example: Top 5 California Customers</h2>
+            <div class="code-block">
+WITH CaliforniaCustomers AS (
+    SELECT customer_id FROM Customers WHERE state = 'CA'
+),
+CustomerSpending AS (
+    SELECT customer_id, SUM(total_amount) as total_spent
+    FROM Orders
+    WHERE customer_id IN (SELECT customer_id FROM CaliforniaCustomers)
+    GROUP BY customer_id
+)
+SELECT customer_id, total_spent 
+FROM CustomerSpending 
+ORDER BY total_spent DESC 
+LIMIT 5;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 8</span>
+            <h1>Assignment 8: Step-by-Step Analysis</h1>
+            
+            <div class="assignment-box">
+                <h2>Task:</h2>
+                <p>Using a CTE, first identify all products in the 'Electronics' category. Then, in the main query, find the total quantity of these electronics products sold.</p>
+            </div>
+        </div>
+
+        <!-- Week 9 -->
+        <div class="slide">
+            <span class="week-badge">Week 9</span>
+            <h1>Window Functions</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Perform calculations across sets of rows
+            </div>
+
+            <h2>In-Class Example: Advanced Analytics</h2>
+            <div class="code-block">
+-- Rank products by price within each category
+SELECT name, category_id, price, 
+       RANK() OVER (PARTITION BY category_id ORDER BY price DESC) as price_rank 
+FROM Products;
+
+-- Show running total of sales day by day
+SELECT order_date, total_amount, 
+       SUM(total_amount) OVER (ORDER BY order_date) as running_total 
+FROM Orders;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 9</span>
+            <h1>Assignment 9: Customer and Sales Ranking</h1>
+            
+            <div class="assignment-box">
+                <h2>Task: Write the following analytical queries:</h2>
+                <ol>
+                    <li>For each order, show its total amount alongside the average order amount for that specific customer</li>
+                    <li>Generate a sales report that shows each day's total sales, as well as the sales from the previous day in an adjacent column (Hint: use LAG)</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Week 10 -->
+        <div class="slide">
+            <span class="week-badge">Week 10</span>
+            <h1>Views and Transaction Control</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Create virtual tables and manage multi-step operations
+            </div>
+
+            <h2>In-Class Example: Simplify Access & Ensure Integrity</h2>
+            <div class="code-block">
+-- Create a View
+CREATE VIEW vw_sales_report AS 
+SELECT o.order_id, c.email, ...;
+
+-- Transaction: Process a product return
+BEGIN;
+UPDATE Products SET stock = stock + 1 WHERE product_id = 789;
+INSERT INTO Returns (order_id, product_id, reason) VALUES (...);
+COMMIT;
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 10</span>
+            <h1>Assignment 10: Abstraction and Safety</h1>
+            
+            <div class="assignment-box">
+                <h2>Task:</h2>
+                <ol>
+                    <li>Create a view named <code>vw_product_inventory</code> that shows the product name, category name, and current stock level</li>
+                    <li>Write a transaction script that processes a new order: it must INSERT a record into Orders and then UPDATE the stock level in the Products table for the purchased item. If either step fails, neither should be saved</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Week 11 -->
+        <div class="slide">
+            <span class="week-badge">Week 11</span>
+            <h1>Performance Tuning and Indexing</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Learn how to make queries faster
+            </div>
+
+            <h2>In-Class Example: A Query is Too Slow</h2>
+            <div class="code-block">
+-- Run EXPLAIN ANALYZE to see "Sequential Scan"
+EXPLAIN ANALYZE SELECT * FROM Orders 
+WHERE order_date > '2025-01-01';
+
+-- Create index to speed up the query
+CREATE INDEX idx_orders_order_date ON Orders(order_date);
+
+-- Re-run EXPLAIN to see much faster "Index Scan"
+            </div>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 11</span>
+            <h1>Assignment 11: Speeding Up Searches</h1>
+            
+            <div class="assignment-box">
+                <h2>Scenario:</h2>
+                <p>Your website has a feature to look up a customer by their email address. This is currently very slow.</p>
+                
+                <h2>Deliverable:</h2>
+                <p>Write the CREATE INDEX statement that would drastically speed up this lookup and add a one-sentence comment in your script explaining why this specific index is the right choice.</p>
+            </div>
+        </div>
+
+        <!-- Week 12 -->
+        <div class="slide">
+            <span class="week-badge">Week 12</span>
+            <h1>Procedural SQL and Functions</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Create reusable SQL code blocks
+            </div>
+
+            <h2>In-Class Example: Encapsulate Business Logic</h2>
+            <p>We'll write a function <code>get_customer_lifetime_value(cust_id INT)</code> that calculates the total spending for a given customer and returns it as a decimal value.</p>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 12</span>
+            <h1>Assignment 12: Creating a Stored Procedure</h1>
+            
+            <div class="assignment-box">
+                <h2>Task:</h2>
+                <p>Write a stored procedure named <code>ship_order(ord_id INT)</code>. This procedure should take an order_id, check if the current status is 'Pending', and if so, update its status to 'Shipped' and set a shipped_date to the current time.</p>
+            </div>
+        </div>
+
+        <!-- Week 13 -->
+        <div class="slide">
+            <span class="week-badge">Week 13</span>
+            <h1>SQL Security and Data Control</h1>
+            
+            <div class="goal-box">
+                <strong>Goal:</strong> Manage permissions and prevent attacks
+            </div>
+
+            <h2>In-Class Example: New User for Marketing Team</h2>
+            <div class="code-block">
+CREATE ROLE marketing;
+
+GRANT SELECT ON vw_sales_report TO marketing; 
+-- They can only see the view, not the base tables
+
+GRANT USAGE ON SCHEMA public TO marketing;
+            </div>
+            
+            <p>I'll demonstrate a basic SQL Injection attack on poorly written application code and show how parameterized queries prevent it.</p>
+        </div>
+
+        <div class="slide">
+            <span class="week-badge">Week 13</span>
+            <h1>Assignment 13: Locking Down the Database</h1>
+            
+            <div class="assignment-box">
+                <h2>Task:</h2>
+                <p>Write the SQL commands to create a new role called <code>inventory_clerk</code>. This role should only be allowed to SELECT and UPDATE the stock and price columns on the Products table. They should not be able to see any customer or order information.</p>
+            </div>
+        </div>
+
+        <!-- Week 14 -->
+        <div class="slide">
+            <span class="week-badge">Week 14</span>
+            <h1>Course Review & Final Project</h1>
+            
+            <h2>In-Class Activity</h2>
+            <div class="highlight-box">
+                <p>A comprehensive review session, tackling a complex, multi-part query that uses a CTE, a window function, and multiple joins, tying everything together.</p>
+            </div>
+            
+            <h2>Final Project</h2>
+            <div class="assignment-box">
+                <p><strong>Assigned around Week 10, due this week</strong></p>
+                <p>Students are given a new, unfamiliar dataset (e.g., flight data, movie ratings, health records) and a list of 10 business questions. They must write a single, well-commented SQL script that provides the answers to all 10 questions, demonstrating mastery of the concepts covered in the course.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = n + 1;
+            document.getElementById('prev-btn').disabled = n === 0;
+            document.getElementById('next-btn').disabled = n === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
